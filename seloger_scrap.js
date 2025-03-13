@@ -1,6 +1,13 @@
+setTimeout(function (){
+    let element = document.evaluate("/html/body/div[2]/div/main/section[1]/div/div[2]/div[2]/a", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    if (element)
+        element.click();
+}, 3000);
+
 // Avoir tous les boutons pour trouver 
 // le bouton Suivant
 var everything = null;
+var last_time = 0;
 function init()
 {
     var get_next_a = setInterval(function(){
@@ -18,14 +25,13 @@ init();
 // Avoir le bouton suivant
 function go_next()
 {
-    everything.forEach(function (every){
-        if (every.innerText == "Suivant")
-        {
-            console.log(every);
-            console.log("Getting next page...");
-            every.click();
-        }
-    });
+    var next = document.querySelector("a[data-testid='gsl.uilib.Paging.nextButton']");
+    console.log(every);
+    console.log("Getting next page...");
+    every.click();
+    if (next)
+        return true;
+    return false;
 }
 
 // Prendre toutes les annonces
@@ -39,7 +45,8 @@ function searchPosts()
                 sendForm(newindow);
         }, index * 14000);
     });
-    setting_timeout(loop, (Object.keys(card).length * 14000));
+    if (!last_time)
+        setting_timeout(loop, (Object.keys(card).length * 14000));
 }
 
 // Envoyer le formulaire sur la nouvelle page
@@ -51,7 +58,7 @@ function sendForm(newindow)
         if (everything)
         {
             console.log("input trouvé !");
-            setNativeValue(input, '0784721532');
+            setNativeValue(input, '0649778431');
             input.dispatchEvent(new Event('input', { bubbles: true }));
             setting_timeout(close_window, 1000, newindow);
             clearInterval(get_tel);
@@ -59,7 +66,7 @@ function sendForm(newindow)
     }, 1000);
 }
 
-// Bypass react input
+// Bypass react input or textarea
 function setNativeValue(element, value) {
     const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
     const prototype = Object.getPrototypeOf(element);
@@ -92,6 +99,10 @@ function close_window(newindow)
 
 function loop()
 {
-    go_next();
+    if (!go_next())
+    {
+        last_time = 1;
+        console.log("Dernière page");
+    }
     init();
 }

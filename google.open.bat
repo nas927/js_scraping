@@ -1,0 +1,1 @@
+"C:\Program Files\Mozilla Firefox\firefox.exe" -new-tab "https://google.com/"

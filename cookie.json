@@ -1,0 +1,44 @@
+[
+    {
+        "name": "_tracking_session",
+        "value": "26b82fb8-e78d-342b-93a7-d9032bd191e0",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "GETAFREE_AUTH_HASH_V2",
+        "value": "dLtJ2iAaPQgbtoHgGjenwlt2+UBW+4Jb65jBtr9cxb0=",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "GETAFREE_LANGUAGE",
+        "value": "en",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "GETAFREE_NOTNEW",
+        "value": "true",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "GETAFREE_USER_ID",
+        "value": "81230486",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "qfence",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkZyZWVsYW5jZXJcXEdBRlxcQ29yZVxcSldUXFxKV1QifQ.eyI4MTIzMDQ4NiI6MTczNjAwOTQxOCwic3ViIjoicXVpY2tsb2dpbmZlbmNlIiwiaWF0IjoxNzM2MDA5NDE4fQ.vUwFXhtJlBuusHfJHSxDnOy4qp0WUHERvIxBO0FdhjE",
+        "domain": ".freelancer.com",
+        "path": "/"
+    },
+    {
+        "name": "session2",
+        "value": "1da497b87d1b1a75c1a132be84821ff47b4e64552973daafc623d536844742dea430ea1bf5870f07",
+        "domain": ".freelancer.com",
+        "path": "/"
+    }
+]

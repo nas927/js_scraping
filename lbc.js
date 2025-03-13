@@ -1,4 +1,5 @@
 var everything = null;
+var last_time = 0;
 function init()
 {
     var get_next_a = setInterval(function(){
@@ -16,9 +17,9 @@ init();
 // Avoir le bouton suivant
 function go_next()
 {
-    var go_next = document.getElementById("pagination::r1d::next");
+    var go_next = document.querySelector("[id$='::next']");
     
-    if (go_next.innerText == "Suivant" && isNotDisabled(go_next))
+    if (isNotDisabled(go_next))
     {
         console.log(go_next);
         console.log("Getting next page...");
@@ -33,29 +34,30 @@ function go_next()
 // Prendre toutes les annonces
 function searchPosts()
 {
-    var card = document.querySelectorAll("a[data-qa-id=aditem_container]");
+    var card = document.querySelectorAll("article[data-qa-id=aditem_container] a");
 
     card.forEach(function (c, index) {
         setTimeout(function (){
                 console.log(window.location.origin + c.href);
-                var newindow = open(c.href, 'newwin', "width=1000,height=1000")
+                var newindow = open(c.href, 'newwin')
                 ClickButton(newindow);
         }, index * 14000);
     });
-    setting_timeout(loop, (Object.keys(card).length * 16000));
+    if (!last_time)
+        setting_timeout(loop, (Object.keys(card).length * 16000));
 }
 
 function ClickButton(newindow)
 {
-    var button = newindow.document.querySelectorAll('button[data-test-id=contact-button]');
+    var button = newindow.document.querySelector('button[data-pub-id=adview_button_contact_contact]');
     var get_button = setInterval(function(){
-        button = newindow.document.querySelectorAll('button[data-test-id=contact-button]');
-        if (button && button[0].innerText != "Chargement...")
+        button = newindow.document.querySelector('button[data-pub-id=adview_button_contact_contact]');
+        if (button && button.innerText != "Chargement...")
         {
             clearInterval(get_button);
             setTimeout(function (){
                 console.log("clicking");
-                button[0].click();
+                button.click();
                 typeForm(newindow);
             }, 2000);
         }
@@ -64,13 +66,21 @@ function ClickButton(newindow)
 
 function typeForm(newindow)
 {
-    var button = newindow.document.querySelector('button[aria-label=Envoyer]');
+    var button = newindow.document.querySelector('button[aria-label*=Envoyer]');
     var get_button = setInterval(function(){
-        button = newindow.document.querySelector('button[aria-label=Envoyer]');
+        button = newindow.document.querySelector('button[aria-label*=Envoyer]');
         if (button)
         {
             clearInterval(get_button);
             setTimeout(function (){
+                var phone = newindow.document.querySelector("input[id=phone]");
+                phone.focus();
+                if (phone)
+                {
+                    phone.value = "0784721532";
+                    phone.dispatchEvent(new Event('input', { bubbles: true }));
+                    setNativeValue(phone, '0784721532');
+                }
                 var input = newindow.document.querySelector("textarea[id=body]");
                 setNativeValue(input, 'Bonjour, je suis intéressé par votre bien à louer au plus tôt nous serons 2 voire 3. Vous pouvez trouver mon dossier sur mon profile merci d\'avance');
                 input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -128,5 +138,6 @@ function setNativeValue(element, value) {
 function loop()
 {
     if (go_next())
-        init();
+        last_time = 1;
+    init();
 }

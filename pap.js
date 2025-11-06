@@ -47,7 +47,7 @@ function sendForm(newindow)
         {
             console.log("input trouvé !");
             clearInterval(get_name);
-            let title = document.querySelector("h1.item-title").innerText;
+            let title = newindow.document.querySelector("h1.item-title").innerText;
             if (check_colocation(title))
                 return;
             let surname = newindow.document.querySelector('input[name=nom]');

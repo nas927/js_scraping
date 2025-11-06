@@ -15,14 +15,15 @@ init();
 
 
 // Prendre toutes les annonces
-function iterate(card)
+function iterate(cards)
 {
-    card.forEach(function (c, index) {
+    cards.forEach(function (c, index) {
         setTimeout(function (){
                 var newindow = open(c.href, 'newwin')
-                sendForm(newindow);
+                sendForm(newindow, index);
         }, index * 14000);
     });
+    console.log("Nombre d'annonces : " + cards.length);
 }
 
 
@@ -38,14 +39,14 @@ function check_colocation(title)
 
 
 // Envoyer le formulaire sur la nouvelle page
-function sendForm(newindow)
+function sendForm(newindow, index)
 {
     let prenom = newindow.document.querySelector('input[name=prenom]');
     var get_name = setInterval(function(){
         prenom = newindow.document.querySelector('input[name=prenom]');
         if (prenom)
         {
-            console.log("input trouvé !");
+            console.log("input trouvé ! Annonce n°" + (index + 1));
             clearInterval(get_name);
             let title = newindow.document.querySelector("h1.item-title").innerText;
             if (check_colocation(title))

@@ -73,7 +73,7 @@ function typeForm(newindow)
         {
             clearInterval(get_button);
             setTimeout(function (){
-                var dossiercomplet = document.querySelectorAll("label:has(span.text-body-1)");
+                var dossiercomplet = newindow.document.querySelectorAll("label:has(span.text-body-1)");
                 if (dossiercomplet.length > 0)
                     dossiercomplet[1].click();
                 var input = newindow.document.querySelector("textarea[id=body]");

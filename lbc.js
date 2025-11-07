@@ -74,7 +74,7 @@ function typeForm(newindow)
             clearInterval(get_button);
             setTimeout(function (){
                 var dossiercomplet = newindow.document.querySelectorAll("label:has(span.text-body-1)");
-                if (dossiercomplet.length > 0)
+                if (dossiercomplet.length > 1)
                     dossiercomplet[1].click();
                 var input = newindow.document.querySelector("textarea[id=body]");
                 setNativeValue(input, 'Bonjour, nous sommes un couple composé d\'un informaticien et d\'un cadre de santé. Nous recherchons quelque chose de stable. Nous sommes actuellement au rsa temporairement le temps d\'aboutir à nos ambitions. Nous sommes des personnes sérieuses et honnête nous garantissons toute la coopération nécessaire au bon déroulement de la location dans l\'attente de votre réponse je vous prie d\'agréer mes salutations distinguées. Nous sommes disponible pour en discuter à ce numéro 07 84 72 15 32 et cet email ncamelia.amrane@gmail.com');
@@ -136,3 +136,4 @@ function loop()
         last_time = 1;
     init();
 }
+

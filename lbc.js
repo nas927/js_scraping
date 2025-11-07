@@ -17,7 +17,7 @@ init();
 // Avoir le bouton suivant
 function go_next()
 {
-    var go_next = document.querySelector("[id$='::next']");
+    var go_next = document.querySelector("button[aria-label='Page suivante'], a[aria-label='Page suivante']"); 
     
     if (isNotDisabled(go_next))
     {
@@ -34,9 +34,9 @@ function go_next()
 // Prendre toutes les annonces
 function searchPosts()
 {
-    var card = document.querySelectorAll("article[data-qa-id=aditem_container] a");
+    var cards = document.querySelectorAll("article[data-qa-id=aditem_container] a[aria-label^=Voir ]");
 
-    card.forEach(function (c, index) {
+    cards.forEach(function (c, index) {
         setTimeout(function (){
                 console.log(window.location.origin + c.href);
                 var newindow = open(c.href, 'newwin')
@@ -44,7 +44,7 @@ function searchPosts()
         }, index * 14000);
     });
     if (!last_time)
-        setting_timeout(loop, (Object.keys(card).length * 16000));
+        setting_timeout(loop, (Object.keys(cards).length * 16000));
 }
 
 function ClickButton(newindow)
@@ -136,4 +136,3 @@ function loop()
         last_time = 1;
     init();
 }
-

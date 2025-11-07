@@ -1,9 +1,3 @@
-setTimeout(function (){
-    let element = document.evaluate("/html/body/div[2]/div/main/section[1]/div/div[2]/div[2]/a", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    if (element)
-        element.click();
-}, 3000);
-
 // Avoir tous les boutons pour trouver 
 // le bouton Suivant
 var everything = null;
@@ -11,12 +5,12 @@ var last_time = 0;
 function init()
 {
     var get_next_a = setInterval(function(){
-        everything = document.querySelectorAll("a[kind=primary]");
+        everything = document.querySelectorAll("a[title]");
         if (everything)
         {
             console.log("Trouvé !")
             clearInterval(get_next_a);
-            searchPosts();
+            searchPosts(everything);
         }
     }, 1000);
 }
@@ -25,58 +19,43 @@ init();
 // Avoir le bouton suivant
 function go_next()
 {
-    var next = document.querySelector("a[data-testid='gsl.uilib.Paging.nextButton']");
-    console.log(every);
+    var next = document.querySelector("button[aria-label='page suivante']");
     console.log("Getting next page...");
-    every.click();
     if (next)
+    {
+        next.click();
         return true;
+    }
     return false;
 }
 
 // Prendre toutes les annonces
-function searchPosts()
+function searchPosts(cards)
 {
-    var card = document.querySelectorAll("a[data-testId='sl.explore.coveringLink']");
-
-    card.forEach(function (c, index) {
+    cards.forEach(function (c, index) {
         setTimeout(function (){
-                var newindow = open(c.href, 'newwin', "width=1000,height=1000")
-                sendForm(newindow);
+                console.log("Ouverture de la fenêtre " + c.href);
+                var newindow = open(c.href, 'newwin');
+                sendForm(newindow, index);
         }, index * 14000);
     });
     if (!last_time)
-        setting_timeout(loop, (Object.keys(card).length * 14000));
+        setting_timeout(loop, (Object.keys(cards).length * 14000));
 }
 
 // Envoyer le formulaire sur la nouvelle page
-function sendForm(newindow)
+function sendForm(newindow, index)
 {
-    var input = newindow.document.querySelector('input[name=telephone]');
-    var get_tel = setInterval(function(){
-        input = newindow.document.querySelector('input[name=telephone]');
-        if (everything)
+    var get_tel = setInterval (function(){
+        var tel = newindow.document.querySelector('input[name=firstName]');
+        if (tel)
         {
-            console.log("input trouvé !");
-            setNativeValue(input, '0649778431');
-            input.dispatchEvent(new Event('input', { bubbles: true }));
+            console.log("input trouvé ! n° " + index);
+            newindow.document.querySelector('button[type=submit]').click();
             setting_timeout(close_window, 1000, newindow);
             clearInterval(get_tel);
         }
     }, 1000);
-}
-
-// Bypass react input or textarea
-function setNativeValue(element, value) {
-    const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
-    const prototype = Object.getPrototypeOf(element);
-    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
-    
-    if (valueSetter && valueSetter !== prototypeValueSetter) {
-        prototypeValueSetter.call(element, value);
-    } else {
-      valueSetter.call(element, value);
-    }
 }
 
 function setting_timeout(do_thing, ms, ...args)
@@ -88,10 +67,6 @@ function setting_timeout(do_thing, ms, ...args)
 
 function close_window(newindow)
 {
-    scrollto = newindow.document.getElementById("centralContactForm");
-    scrollto.scrollIntoView();
-    var send = newindow.document.querySelector("button[data-test=submit-button]");
-    send.click();
     setTimeout(function (){
         newindow.close();
     }, 4000);

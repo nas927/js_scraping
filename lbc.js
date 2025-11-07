@@ -40,14 +40,14 @@ function searchPosts()
         setTimeout(function (){
                 console.log(window.location.origin + c.href);
                 var newindow = open(c.href, 'newwin')
-                ClickButton(newindow);
-        }, index * 14000);
+                ClickButton(newindow, index);
+        }, index * 25000);
     });
     if (!last_time)
         setting_timeout(loop, (Object.keys(cards).length * 16000));
 }
 
-function ClickButton(newindow)
+function ClickButton(newindow, index)
 {
     var button = newindow.document.querySelector('button[data-pub-id=adview_button_contact_contact]');
     var get_button = setInterval(function(){
@@ -56,7 +56,7 @@ function ClickButton(newindow)
         {
             clearInterval(get_button);
             setTimeout(function (){
-                console.log("clicking");
+                console.log("clicking n°" + index);
                 button.click();
                 typeForm(newindow);
             }, 2000);

@@ -37,7 +37,7 @@ function searchPosts(cards)
                 console.log("Ouverture de la fenêtre " + c.href);
                 var newindow = open(c.href, 'newwin');
                 sendForm(newindow, index);
-        }, index * 14000);
+        }, index * 15000);
     });
     if (!last_time)
         setting_timeout(loop, (Object.keys(cards).length * 14000));
@@ -51,8 +51,8 @@ function sendForm(newindow, index)
         if (tel)
         {
             console.log("input trouvé ! n° " + index);
-            newindow.document.querySelector('button[type=submit]').click();
-            setting_timeout(close_window, 1000, newindow);
+            setTimeout(function () {newindow.document.querySelector('button[type=submit]').click();}, 1000);
+            setting_timeout(close_window, 2500, newindow);
             clearInterval(get_tel);
         }
     }, 1000);
@@ -67,9 +67,7 @@ function setting_timeout(do_thing, ms, ...args)
 
 function close_window(newindow)
 {
-    setTimeout(function (){
-        newindow.close();
-    }, 4000);
+    newindow.close();
 }
 
 function loop()

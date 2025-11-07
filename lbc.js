@@ -73,16 +73,11 @@ function typeForm(newindow)
         {
             clearInterval(get_button);
             setTimeout(function (){
-                var phone = newindow.document.querySelector("input[id=phone]");
-                phone.focus();
-                if (phone)
-                {
-                    phone.value = "0784721532";
-                    phone.dispatchEvent(new Event('input', { bubbles: true }));
-                    setNativeValue(phone, '0784721532');
-                }
+                var dossiercomplet = document.querySelectorAll("label:has(span.text-body-1)");
+                if (dossiercomplet.length > 0)
+                    dossiercomplet[1].click();
                 var input = newindow.document.querySelector("textarea[id=body]");
-                setNativeValue(input, 'Bonjour, je suis intéressé par votre bien à louer au plus tôt nous serons 2 voire 3. Vous pouvez trouver mon dossier sur mon profile merci d\'avance');
+                setNativeValue(input, 'Bonjour, nous sommes un couple composé d\'un informaticien et d\'un cadre de santé. Nous recherchons quelque chose de stable. Nous sommes actuellement au rsa temporairement le temps d\'aboutir à nos ambitions. Nous sommes des personnes sérieuses et honnête nous garantissons toute la coopération nécessaire au bon déroulement de la location dans l\'attente de votre réponse je vous prie d\'agréer mes salutations distinguées. Nous sommes disponible pour en discuter à ce numéro 07 84 72 15 32 et cet email ncamelia.amrane@gmail.com');
                 input.dispatchEvent(new Event('input', { bubbles: true }));
                 sendForm(newindow, button);
             }, 2000);

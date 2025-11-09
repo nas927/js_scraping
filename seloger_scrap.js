@@ -8,7 +8,7 @@ function init()
         everything = document.querySelectorAll("a[title]");
         if (everything)
         {
-            console.log("Trouvé !")
+            console.warn("Trouvé !")
             clearInterval(get_next_a);
             searchPosts(everything);
         }
@@ -20,7 +20,7 @@ init();
 function go_next()
 {
     var next = document.querySelector("button[aria-label='page suivante']");
-    console.log("Getting next page...");
+    console.warn("Getting next page...");
     if (next)
     {
         next.click();
@@ -34,7 +34,7 @@ function searchPosts(cards)
 {
     cards.forEach(function (c, index) {
         setTimeout(function (){
-                console.log("Ouverture de la fenêtre " + c.href);
+                console.warn("Ouverture de la fenêtre " + c.href);
                 var newindow = open(c.href, 'newwin');
                 sendForm(newindow, index);
         }, index * 16000);
@@ -50,10 +50,10 @@ function sendForm(newindow, index)
         var tel = newindow.document.querySelector('input[name=firstName]');
         if (tel)
         {
-            console.log("input trouvé ! n° " + index);
-            setTimeout(function () {newindow.document.querySelector('button[data-testid=cdp-contact-form-submit]').click();}, 2000);
-            setting_timeout(close_window, 3000, newindow);
+            console.warn("input trouvé ! n° " + index);
             clearInterval(get_tel);
+            setTimeout(function () { newindow.document.querySelectorAll('button[data-testid=cdp-contact-form-submit]')[1].click(); }, 2000);
+            setTimeout(function () { newindow.close(); }, 4000);
         }
     }, 1000);
 }
@@ -63,11 +63,6 @@ function setting_timeout(do_thing, ms, ...args)
     setTimeout(function (){
         do_thing(...args);
     }, ms);
-}
-
-function close_window(newindow)
-{
-    newindow.close();
 }
 
 function loop()

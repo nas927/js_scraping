@@ -37,7 +37,7 @@ function searchPosts(cards)
                 console.log("Ouverture de la fenêtre " + c.href);
                 var newindow = open(c.href, 'newwin');
                 sendForm(newindow, index);
-        }, index * 15000);
+        }, index * 16000);
     });
     if (!last_time)
         setting_timeout(loop, (Object.keys(cards).length * 14000));
@@ -51,8 +51,8 @@ function sendForm(newindow, index)
         if (tel)
         {
             console.log("input trouvé ! n° " + index);
-            setTimeout(function () {newindow.document.querySelector('button[type=submit]').click();}, 1000);
-            setting_timeout(close_window, 2500, newindow);
+            setTimeout(function () {newindow.document.querySelector('button[data-testid=cdp-contact-form-submit]').click();}, 2000);
+            setting_timeout(close_window, 3000, newindow);
             clearInterval(get_tel);
         }
     }, 1000);

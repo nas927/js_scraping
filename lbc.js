@@ -48,6 +48,7 @@ function sendForm(newindow, index)
 {
     var get_tel = setInterval (function(){
         var tel = newindow.document.querySelector('input[name=firstName]');
+        console.warn("Recherche input... n° " + index, tel);
         if (tel)
         {
             console.warn("input trouvé ! n° " + index);

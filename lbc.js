@@ -1,14 +1,16 @@
+// Avoir tous les boutons pour trouver 
+// le bouton Suivant
 var everything = null;
 var last_time = 0;
 function init()
 {
     var get_next_a = setInterval(function(){
-        var everything = document.querySelectorAll("a[data-qa-id=aditem_container]");
+        everything = document.querySelectorAll("a[title]");
         if (everything)
         {
-            console.log("Trouvé !")
+            console.warn("Trouvé !")
             clearInterval(get_next_a);
-            searchPosts();
+            searchPosts(everything);
         }
     }, 1000);
 }
@@ -17,97 +19,52 @@ init();
 // Avoir le bouton suivant
 function go_next()
 {
-    var go_next = document.querySelector("button[aria-label='Page suivante'], a[aria-label='Page suivante']"); 
-    
-    if (isNotDisabled(go_next))
+    var next = document.querySelector("button[aria-label='page suivante']");
+    console.warn("Getting next page...");
+    if (next)
     {
-        console.log(go_next);
-        console.log("Getting next page...");
-        go_next.click();
+        next.click();
         return true;
     }
-    else
-        console.log("fini");
     return false;
 }
 
 // Prendre toutes les annonces
-function searchPosts()
+function searchPosts(cards)
 {
-    var cards = document.querySelectorAll("article[data-qa-id=aditem_container] a[aria-label^=Voir ]");
-
     cards.forEach(function (c, index) {
         setTimeout(function (){
-                console.log(window.location.origin + c.href);
-                var newindow = open(c.href, 'newwin')
-                ClickButton(newindow, index);
-        }, index * 25000);
+                console.warn("Ouverture de la fenêtre " + c.href);
+                var newindow = open(c.href);
+                sendForm(newindow, index);
+        }, index * 22000);
     });
     if (!last_time)
-        setting_timeout(loop, (Object.keys(cards).length * 16000));
+        setting_timeout(loop, (Object.keys(cards).length * 14000));
 }
 
-function ClickButton(newindow, index)
+// Envoyer le formulaire sur la nouvelle page
+function sendForm(newindow, index)
 {
-    var button = newindow.document.querySelector('button[data-pub-id=adview_button_contact_contact]');
-    var get_button = setInterval(function(){
-        button = newindow.document.querySelector('button[data-pub-id=adview_button_contact_contact]');
-        if (button && button.innerText != "Chargement...")
+    var get_tel = setInterval (function(){
+        var tel = newindow.document.querySelector('input[name=firstName]');
+        if (tel)
         {
-            clearInterval(get_button);
-            setTimeout(function (){
-                console.log("clicking n°" + index);
-                button.click();
-                typeForm(newindow);
+            console.warn("input trouvé ! n° " + index);
+            clearInterval(get_tel);
+            setTimeout(function () { 
+                let btn = newindow.document.querySelectorAll('button[data-testid=cdp-contact-form-submit]')[1];
+                if (btn)
+                    btn.click();
+                console.warn(btn);
+                console.warn("Formulaire envoyé ! n° " + index);
             }, 2000);
+            setTimeout(function () { 
+                newindow.close();
+                console.warn("Fenêtre fermée ! n° " + index);
+            }, 5000);
         }
     }, 1000);
-}
-
-function typeForm(newindow)
-{
-    var button = newindow.document.querySelector('button[aria-label*=Envoyer]');
-    var get_button = setInterval(function(){
-        button = newindow.document.querySelector('button[aria-label*=Envoyer]');
-        if (button)
-        {
-            clearInterval(get_button);
-            setTimeout(function (){
-                var dossiercomplet = newindow.document.querySelectorAll("label:has(span.text-body-1)");
-                if (dossiercomplet.length > 1)
-                    dossiercomplet[1].click();
-                var input = newindow.document.querySelector("textarea[id=body]");
-                setNativeValue(input, 'Bonjour, nous sommes un couple composé d\'un informaticien et d\'un cadre de santé. Nous recherchons quelque chose de stable. Nous sommes actuellement au rsa temporairement le temps d\'aboutir à nos ambitions. Nous sommes des personnes sérieuses et honnête nous garantissons toute la coopération nécessaire au bon déroulement de la location dans l\'attente de votre réponse je vous prie d\'agréer mes salutations distinguées. Nous sommes disponible pour en discuter à ce numéro 07 84 72 15 32 et cet email ncamelia.amrane@gmail.com');
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-                sendForm(newindow, button);
-            }, 2000);
-        }
-    }, 1000);
-}
-
-function sendForm(newindow, button)
-{
-    setTimeout(function (){
-        console.log("Envoie...");
-        button.click();
-        close_window(newindow);
-    }, 2000);
-}
-
-function close_window(newindow)
-{
-    // scrollto = newindow.document.getElementById("centralContactForm");
-    // scrollto.scrollIntoView();
-    setTimeout(function (){
-        newindow.close();
-    }, 4000);
-}
-
-
-/* Utils */
-
-function isNotDisabled(element) {
-    return !element.hasAttribute('disabled');
 }
 
 function setting_timeout(do_thing, ms, ...args)
@@ -117,22 +74,12 @@ function setting_timeout(do_thing, ms, ...args)
     }, ms);
 }
 
-// Bypass react input or textarea
-function setNativeValue(element, value) {
-    const valueSetter = Object.getOwnPropertyDescriptor(element, 'value').set;
-    const prototype = Object.getPrototypeOf(element);
-    const prototypeValueSetter = Object.getOwnPropertyDescriptor(prototype, 'value').set;
-    
-    if (valueSetter && valueSetter !== prototypeValueSetter) {
-        prototypeValueSetter.call(element, value);
-    } else {
-        valueSetter.call(element, value);
-    }
-}
-
 function loop()
 {
-    if (go_next())
+    if (!go_next())
+    {
         last_time = 1;
+        console.log("Dernière page");
+    }
     init();
 }
